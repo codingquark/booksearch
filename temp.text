@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="searchTable.css" />
+        <title></title>
+    </head>
+    <body>
+        <?php
+            $query = $_GET["query"];
+            
+            $connection = mysql_connect("127.0.0.1", "root", "SaiyanStyle") or die;
+            
+            mysql_select_db("GAIMS", $connection) or die;
+
+            $sql = "SELECT * FROM `GAIMS_BOOKS` WHERE `Title` REGEXP '$query*' OR `Author` REGEXP '$query*' ";
+            
+            $result = mysql_query($sql) or die;
+            
+            echo "<table class='CSSTableGenerator' border=1><tr><td>Book Name</td><td>Author</td><td>Edition</td></tr>";
+
+            while($row = mysql_fetch_array($result)) {
+                echo "<td>" . $row['Title'] . "</td><td>" . $row['Author'] . "</td><td>" . $row['Edtion']. "</td>";
+                echo "</tr>";
+            
+            }
+            
+            echo '</table>';
+        ?>
+    </body>
+</html>
+
+<?php
+require("QCubed/includes/configuration/prepend.inc.php");
+
+/**
+* This class is the main class to search from the database.
+* Being a database, only database queries are fired.
+* String manipulations will be managed by other classes probably.
+*/
+class Search extends QForm
+{
+    $userInput = $_GET["query"];
+    
+    function Form_Create()
+    {
+        # code...
+    }
+}
+?>
